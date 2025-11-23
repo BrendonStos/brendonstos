@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Convite de Casamento</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap" rel="stylesheet">
+
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Bree Serif', serif;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  #audioPlayer {
+    display: none;
+    visibility: hidden;
+    opacity: 0;
+    height: 0;
+    width: 0;
+  }
+</style>
+</head>
+
+<body>
+
+<audio id="audioPlayer">
+  <source src="https://media.vocaroo.com/mp3/1hbPe4Olopew" type="audio/mpeg" />
+</audio>
+
+<div 
+  class="min-h-screen relative overflow-x-hidden pb-8"
+  style="
+    background-image: url('https://i.imgur.com/4fF9hoI.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+  "
+>
+
+<!-- MODAL -->
+<div 
+  id="modal"
+  class="fixed inset-0 z-50 flex items-center justify-center p-4"
+  style="background-color: rgba(0,0,0,0.7);"
+>
+  <div 
+    class="w-full max-w-md p-8 md:p-10 shadow-2xl relative bg-white"
+    style="border-radius:20px; animation:fadeIn .5s ease-out;"
+  >
+    <h1 class="text-center text-2xl md:text-3xl font-bold mb-6" style="color:#575238;">
+      Bem-vindo ao nosso casamento!
+    </h1>
+
+    <form id="form" class="space-y-5">
+      <div>
+        <label class="block mb-2 text-sm" style="color:#575238;">Nome *</label>
+        <input 
+          id="nome1"
+          type="text"
+          required
+          class="w-full px-4 py-3 border-2 outline-none"
+          style="border-color:#aa9c76; border-radius:12px;"
+        >
+      </div>
+
+      <div>
+        <label class="block mb-2 text-sm" style="color:#575238;">Acompanhante (opcional)</label>
+        <input 
+          id="nome2"
+          type="text"
+          class="w-full px-4 py-3 border-2 outline-none"
+          style="border-color:#aa9c76; border-radius:12px;"
+        >
+      </div>
+
+      <button 
+        type="submit"
+        class="w-full py-4 text-white font-semibold text-lg hover:scale-105 active:scale-95"
+        style="background:#b03030; border-radius:12px;"
+      >
+        Ver convite ❤️
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- CONTEÚDO -->
+<div class="container mx-auto px-4 py-12 text-center">
+  <h2 
+    class="text-3xl md:text-5xl mb-10"
+    style="text-shadow: 2px 2px 6px rgba(0,0,0,0.25);"
+  >
+    <span style="color:#000;">Olá, </span>
+    <span id="nomeExibicao" style="color:#ad2929;">Convidado</span>
+  </h2>
+
+  <div class="flex justify-center">
+    <img 
+      src="https://i.imgur.com/me50DXD.png"
+      class="max-w-2xl w-full"
+      style="
+        border-radius:20px;
+        animation:fadeInUp .8s ease-out;
+        box-shadow: 0 6px 28px rgba(0,0,0,0.35);
+      "
+    >
+  </div>
+</div>
+
+<!-- BOTÕES FIXOS -->
+<div class="fixed bottom-2 left-0 right-0 flex justify-center gap-4">
+
+  <!-- WHATSAPP -->
+  <a 
+    id="whatsLink"
+    target="_blank"
+    class="shadow-lg hover:scale-110 active:scale-95 cursor-pointer"
+    style="width:54px;height:54px;border-radius:16px;background:#fff;display:flex;align-items:center;justify-content:center;"
+  >
+    <img src="https://i.imgur.com/g4WV6bB.png" class="w-9 h-9">
+  </a>
+
+  <!-- MAPS -->
+  <a 
+    href="https://maps.app.goo.gl/myZHatcdb6WPA8eT8"
+    target="_blank"
+    class="shadow-lg hover:scale-110 active:scale-95"
+    style="width:54px;height:54px;border-radius:16px;background:#fff;display:flex;align-items:center;justify-content:center;"
+  >
+    <img src="https://i.imgur.com/qSeHLOQ.png" class="w-9 h-9">
+  </a>
+</div>
+
+</div>
+
+<script>
+  const form = document.getElementById('form');
+  const modal = document.getElementById('modal');
+  const audio = document.getElementById('audioPlayer');
+  const nomeExibicao = document.getElementById('nomeExibicao');
+  const whatsLink = document.getElementById('whatsLink');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const n1 = document.getElementById('nome1').value.trim();
+    const n2 = document.getElementById('nome2').value.trim();
+
+    if (!n1) {
+      alert('Por favor, preencha o primeiro nome.');
+      return;
+    }
+
+    const formatado = n2 ? `${n1} & ${n2}` : n1;
+    nomeExibicao.textContent = formatado;
+
+    modal.style.display = 'none';
+
+    audio.currentTime = 0;
+    audio.play().catch(() => {});
+
+    const mensagem = n2 
+      ? `Oi, tudo bem?%0AConfirmo a presença de ${encodeURIComponent(n1)} e ${encodeURIComponent(n2)} ❤️`
+      : `Oi, tudo bem?%0AConfirmo a presença de ${encodeURIComponent(n1)} ❤️`;
+
+    whatsLink.href = `https://wa.me/556492858779?text=${mensagem}`;
+  });
+</script>
+
+</body>
+</html>
