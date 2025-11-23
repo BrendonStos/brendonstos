@@ -6,8 +6,8 @@
 <title>Convite de Casamento</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
-
 <link href="https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <style>
   body {
@@ -32,6 +32,31 @@
     opacity: 0;
     height: 0;
     width: 0;
+  }
+
+  #pdfButton {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  #pdfButton:hover {
+    transform: scale(1.1);
+  }
+
+  #pdfButton img {
+    width: 22px;
+    height: 22px;
   }
 </style>
 </head>
@@ -101,7 +126,7 @@
 </div>
 
 <!-- CONTEÚDO -->
-<div class="container mx-auto px-4 py-12 text-center">
+<div id="conviteContent" class="container mx-auto px-4 py-12 text-center">
   <h2 
     class="text-3xl md:text-5xl mb-10"
     style="text-shadow: 2px 2px 6px rgba(0,0,0,0.25);"
@@ -147,6 +172,11 @@
   </a>
 </div>
 
+<!-- BOTÃO PDF -->
+<div id="pdfButton" title="Baixar convite em PDF">
+  <img src="https://i.imgur.com/8QXr0Jp.png" alt="PDF">
+</div>
+
 </div>
 
 <script>
@@ -155,6 +185,8 @@
   const audio = document.getElementById('audioPlayer');
   const nomeExibicao = document.getElementById('nomeExibicao');
   const whatsLink = document.getElementById('whatsLink');
+  const pdfButton = document.getElementById('pdfButton');
+  const conviteContent = document.getElementById('conviteContent');
 
   form.addEventListener('submit', function(e) {
     e.preventDefault();
@@ -180,6 +212,17 @@
       : `Oi, tudo bem?%0AConfirmo a presença de ${encodeURIComponent(n1)} ❤️`;
 
     whatsLink.href = `https://wa.me/556492858779?text=${mensagem}`;
+  });
+
+  pdfButton.addEventListener('click', () => {
+    const opt = {
+      margin:       0.5,
+      filename:     'convite_casamento.pdf',
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2 },
+      jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+    };
+    html2pdf().set(opt).from(conviteContent).save();
   });
 </script>
 
